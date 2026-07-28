@@ -9,6 +9,7 @@ import {
   type WeaponCategory,
 } from '../data/weapons'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { API_KEY_STORAGE } from '../utils/api'
 import { legendImage, weaponImage } from '../utils/images'
 import { cycleStatus, type StatusMap } from '../utils/status'
 
@@ -39,6 +40,7 @@ export function ConfigPanel() {
     'apex-tool:weapon-statuses',
     {},
   )
+  const [apiKey, setApiKey] = useLocalStorage<string>(API_KEY_STORAGE, '')
 
   const toggleLegend = (id: string) => {
     setLegendStatuses((prev) => ({ ...prev, [id]: cycleStatus(prev[id]) }))
@@ -50,6 +52,33 @@ export function ConfigPanel() {
 
   return (
     <section>
+      <div className="config-section">
+        <div className="config-header">
+          <h2 className="config-title">APIキー</h2>
+        </div>
+        <p className="hint hint-left">
+          マップローテーション機能に使用します。
+          <a
+            href="https://apexlegendsstatus.com/api"
+            target="_blank"
+            rel="noreferrer"
+          >
+            apexlegendsstatus.com/api
+          </a>
+          で無料取得できます（このブラウザにのみ保存されます）
+        </p>
+        <input
+          className="player-name-input api-key-input"
+          type="text"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value.trim())}
+          placeholder="APIキーを貼り付け"
+          aria-label="APIキー"
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </div>
+
       <p className="hint">
         クリックで切り替え：通常 → ★お気に入り（3倍出やすい） → 除外
       </p>
