@@ -28,7 +28,8 @@ const PLAYER_COUNT_LABELS: Record<number, string> = {
   3: 'トリオ',
 }
 
-const WEAPON_SLOT_LABELS = ['メイン', 'サブ']
+// 3枠目はバリスティックのパッシブ（スリング武器）専用
+const WEAPON_SLOT_LABELS = ['メイン', 'サブ', 'スリング']
 
 export function Randomizer() {
   const [legendStatuses] = useLocalStorage<StatusMap>(
@@ -95,15 +96,22 @@ export function Randomizer() {
   const toWeighted = (list: Weapon[]) =>
     list.map((w) => ({ item: w, weight: statusWeight(weaponStatuses[w.id]) }))
 
-  // 1人分の武器セットを抽選する
-  const drawWeaponSet = (): Weapon[] => {
+  // 1人分の武器セットを抽選する（バリスティックはパッシブで3本持てるので3本抽選）
+  const drawWeaponSet = (legend: Legend): Weapon[] => {
+    const count = legend.id === 'ballistic' ? 3 : 2
     if (balanceMode) {
-      return [
+      const set = [
         ...weightedSample(toWeighted(closePool), 1),
         ...weightedSample(toWeighted(longPool), 1),
       ]
+      if (count === 3) {
+        // スリング枠は残りの候補から距離を問わず抽選
+        const rest = weaponCandidates.filter((w) => !set.includes(w))
+        set.push(...weightedSample(toWeighted(rest), 1))
+      }
+      return set
     }
-    return weightedSample(toWeighted(weaponCandidates), 2)
+    return weightedSample(toWeighted(weaponCandidates), count)
   }
 
   const spin = () => {
@@ -136,7 +144,7 @@ export function Randomizer() {
     )
     const results: PlayerResult[] = legends.map((legend) => ({
       legend,
-      weapons: drawWeapons ? drawWeaponSet() : [],
+      weapons: drawWeapons ? drawWeaponSet(legend) : [],
     }))
 
     // 回転中に表示するダミー結果
