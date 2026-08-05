@@ -1,4 +1,4 @@
-// 武器データ（シーズン29スプリット2時点）
+// 武器データ（シーズン30「Marked」時点）
 // ケアパッケージ武器はシーズンごとに入れ替わるので carePackage フラグを更新する
 
 export type WeaponCategory =
@@ -54,9 +54,9 @@ export const WEAPONS: Weapon[] = [
   { id: 'rampage', name: 'ランページ', category: 'lmg' },
   { id: 'lstar', name: 'Lスター', category: 'lmg', carePackage: true },
   // マークスマン
-  { id: 'g7', name: 'G7スカウト', category: 'marksman', carePackage: true },
+  { id: 'g7', name: 'G7スカウト', category: 'marksman' },
   { id: 'tripletake', name: 'トリプルテイク', category: 'marksman' },
-  { id: '3030', name: '30-30リピーター', category: 'marksman' },
+  { id: '3030', name: '30-30リピーター', category: 'marksman', carePackage: true },
   { id: 'bocek', name: 'ボセック', category: 'marksman' },
   // スナイパー
   { id: 'chargerifle', name: 'チャージライフル', category: 'sniper' },
