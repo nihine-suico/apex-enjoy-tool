@@ -101,7 +101,7 @@ export default function App() {
           {tab === 'config' && <ConfigPanel />}
         </main>
         <footer className="app-footer">
-          シーズン29 スプリット2 時点のデータ / 設定はブラウザに自動保存されます
+          シーズン30「Marked」時点のデータ / 設定はブラウザに自動保存されます
         </footer>
       </div>
     </div>
